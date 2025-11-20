@@ -90,35 +90,6 @@
     </div>
 
     <!-- SCRIPT FOR ANIMATIONS -->
-    <script>
-        // 1. Intersection Observer for Fade Up Animation
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Only animate once
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in-up').forEach(el => {
-            observer.observe(el);
-        });
-
-        // 2. Simple Active State for Nav (Optional logic)
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function() {
-                navItems.forEach(n => n.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
