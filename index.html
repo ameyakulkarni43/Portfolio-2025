@@ -3,422 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Portfolio | Designer & Developer</title>
+    
+    <!-- Pre-load Inter Font for that clean look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        /* --- 1. RESET & VARIABLES --- */
+        :root {
+            --bg: #050505;
+            --card-bg: #121212;
+            --card-border: #2a2a2a;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent: #3b82f6; /* Bright Blue */
+            --accent-glow: rgba(59, 130, 246, 0.4);
+            --font: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        * {
-            font-family: 'Inter', sans-serif;
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; cursor: pointer; }
+
+        /* --- 2. UTILITIES & ANIMATIONS --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Fade Up Animation Class */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- 3. FLOATING NAV DOCK --- */
+        .nav-dock-wrapper {
+            position: fixed;
+            bottom: 30px;
+            left: 0; 
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+            pointer-events: none; /* Let clicks pass through around the dock */
         }
         
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .nav-dock {
+            pointer-events: auto;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            padding: 10px 15px;
+            border-radius: 50px;
+            display: flex;
+            gap: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
         }
         
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .float-animation {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .skill-bar {
-            transition: width 2s ease-in-out;
-        }
-        
-        .project-card {
+        .nav-dock:hover { transform: scale(1); }
+
+        .nav-item {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
             transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* --- 4. HERO SECTION --- */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #333, #555);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        /* --- 5. BENTO GRID LAYOUT --- */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            padding-bottom: 150px; /* Space for nav dock */
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #444;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Grid Spans */
+        .col-span-4 { grid-column: span 4; }
+        .col-span-6 { grid-column: span 6; }
+        .col-span-8 { grid-column: span 8; }
+        .col-span-12 { grid-column: span 12; }
+        
+        /* Card Content Styling */
+        .card h3 { font-size: 1.5rem; margin-bottom: 10px; font-weight: 500; }
+        .card p { color: var(--text-muted); font-size: 1rem; line-height: 1.5; }
+        .card-label {
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent); margin-bottom: 15px; display: block; font-weight: 600;
+        }
+
+        /* Visual for Project Cards */
+        .project-preview {
+            width: 100%;
+            height: 200px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
         }
         
-        .project-card:hover {
-            transform: translateY(-10px);
+        /* Fake UI elements for the preview */
+        .project-preview::before {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            width: 120px; height: 120px; background: var(--accent);
+            border-radius: 50%; filter: blur(40px); opacity: 0.4;
+            transform: translate(-50%, -50%);
         }
-        
-        .typing-text::after {
-            content: '|';
-            animation: blink 1s infinite;
+
+        /* Stack (Tech stack list) */
+        .stack-list {
+            display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;
         }
-        
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+        .stack-item {
+            padding: 6px 12px; background: #222; border-radius: 6px;
+            font-size: 0.85rem; color: #ccc; border: 1px solid #333;
         }
-        
-        .scroll-indicator {
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 53%, 80%, 100% {
-                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-                transform: translate3d(0, 0, 0);
-            }
-            40%, 43% {
-                animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-                transform: translate3d(0, -10px, 0);
-            }
-            70% {
-                animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-                transform: translate3d(0, -5px, 0);
-            }
-            90% {
-                transform: translate3d(0, -2px, 0);
-            }
+
+        /* --- 6. MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .bento-grid { display: flex; flex-direction: column; }
+            .nav-dock { padding: 8px 12px; }
+            .nav-item { padding: 8px 15px; font-size: 0.8rem; }
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white overflow-x-hidden">
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass-effect">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="text-2xl font-bold gradient-text">Portfolio</div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="hover:text-purple-400 transition-colors">Home</a>
-                    <a href="#about" class="hover:text-purple-400 transition-colors">About</a>
-                    <a href="#skills" class="hover:text-purple-400 transition-colors">Skills</a>
-                    <a href="#projects" class="hover:text-purple-400 transition-colors">Projects</a>
-                    <a href="#contact" class="hover:text-purple-400 transition-colors">Contact</a>
-                </div>
-                <button class="md:hidden">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </nav>
+<body>
 
-    <!-- Hero Section -->
-    <section id="home" class="min-h-screen gradient-bg flex items-center justify-center relative">
-        <div class="absolute inset-0 bg-black opacity-40"></div>
-        <div class="container mx-auto px-6 text-center relative z-10">
-            <div class="float-animation">
-                <div class="w-32 h-32 mx-auto mb-8 rounded-full bg-white/20 backdrop-blur-lg border border-white/30 flex items-center justify-center">
-                    <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
-                </div>
+    <div class="container">
+        
+        <!-- HERO SECTION -->
+        <section class="hero fade-in-up" id="home">
+            <div class="avatar">
+                <!-- Replace src with your image -->
+                <img src="https://ui-avatars.com/api/?name=Y+N&background=random&color=fff" alt="Me">
             </div>
-            <h1 class="text-5xl md:text-7xl font-bold mb-6">
-                Hi, I'm <span class="typing-text bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">Ameya Kulkarni</span>
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 text-gray-200">Full Stack Developer & UI/UX Designer</p>
-            <div class="flex justify-center space-x-4">
-                <button class="bg-white text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-gray-200 transition-colors">
-                    View My Work
-                </button>
-                <button class="border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-gray-900 transition-colors">
-                    Download CV
-                </button>
-            </div>
-        </div>
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 scroll-indicator">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
-        </div>
-    </section>
+            <h1>Building digital<br>products & brands.</h1>
+            <p>I am a multidisciplinary designer and developer focusing on interaction and visual identity.</p>
+        </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-gray-800">
-        <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-4xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">About Me</h2>
-                    <p class="text-gray-300 mb-6 leading-relaxed">
-                        I'm a passionate full-stack developer with over 5 years of experience creating digital experiences 
-                        that combine beautiful design with powerful functionality. I specialize in React, Node.js, and modern 
-                        web technologies.
-                    </p>
-                    <p class="text-gray-300 mb-6 leading-relaxed">
-                        When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, 
-                        or sharing knowledge with the developer community through blogs and workshops.
-                    </p>
-                    <div class="flex space-x-4">
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-purple-400">50+</div>
-                            <div class="text-gray-400">Projects</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-purple-400">5+</div>
-                            <div class="text-gray-400">Years Exp</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-purple-400">100+</div>
-                            <div class="text-gray-400">Happy Clients</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative">
-                    <div class="w-full h-96 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg opacity-80"></div>
-                    <div class="absolute inset-0 bg-black/20 rounded-lg"></div>
+        <!-- BENTO GRID SECTION -->
+        <div class="bento-grid">
+            
+            <!-- About Card -->
+            <div class="card col-span-8 fade-in-up">
+                <span class="card-label">About Me</span>
+                <h3>Driven by design, powered by code.</h3>
+                <p style="margin-top:1rem;">I have over 5 years of experience working with startups and agencies. My goal is to bridge the gap between creative design and technical implementation.</p>
+            </div>
+
+            <!-- Socials / Contact -->
+            <div class="card col-span-4 fade-in-up" style="display:flex; flex-direction:column; justify-content:center;">
+                <span class="card-label">Connect</span>
+                <div style="display:flex; gap:15px; margin-top:10px;">
+                    <a href="#" class="stack-item">Twitter/X</a>
+                    <a href="#" class="stack-item">LinkedIn</a>
+                    <a href="#" class="stack-item">Email</a>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 bg-gray-900">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Skills & Technologies</h2>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div>
-                    <h3 class="text-2xl font-semibold mb-8 text-purple-400">Technical Skills</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span>React.js</span>
-                                <span>95%</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-3">
-                                <div class="skill-bar bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full" style="width: 95%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span>Node.js</span>
-                                <span>90%</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-3">
-                                <div class="skill-bar bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span>Python</span>
-                                <span>85%</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-3">
-                                <div class="skill-bar bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span>UI/UX Design</span>
-                                <span>92%</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-3">
-                                <div class="skill-bar bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full" style="width: 92%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-semibold mb-8 text-purple-400">Tools & Frameworks</h3>
-                    <div class="grid grid-cols-3 gap-6">
-                        <div class="glass-effect p-4 rounded-lg text-center hover:bg-white/20 transition-colors">
-                            <div class="text-3xl mb-2">⚛️</div>
-                            <div class="text-sm">React</div>
-                        </div>
-                        <div class="glass-effect p-4 rounded-lg text-center hover:bg-white/20 transition-colors">
-                            <div class="text-3xl mb-2">🚀</div>
-                            <div class="text-sm">Next.js</div>
-                        </div>
-                        <div class="glass-effect p-4 rounded-lg text-center hover:bg-white/20 transition-colors">
-                            <div class="text-3xl mb-2">📱</div>
-                            <div class="text-sm">React Native</div>
-                        </div>
-                        <div class="glass-effect p-4 rounded-lg text-center hover:bg-white/20 transition-colors">
-                            <div class="text-3xl mb-2">🎨</div>
-                            <div class="text-sm">Tailwind</div>
-                        </div>
-                        <div class="glass-effect p-4 rounded-lg text-center hover:bg-white/20 transition-colors">
-                            <div class="text-3xl mb-2">🗄️</div>
-                            <div class="text-sm">MongoDB</div>
-                        </div>
-                        <div class="glass-effect p-4 rounded-lg text-center hover:bg-white/20 transition-colors">
-                            <div class="text-3xl mb-2">☁️</div>
-                            <div class="text-sm">AWS</div>
-                        </div>
-                    </div>
+            <!-- Project 1 -->
+            <div class="card col-span-6 fade-in-up">
+                <span class="card-label">Project 01</span>
+                <h3>Finance Dashboard</h3>
+                <p>A complete overhaul of a fintech banking platform.</p>
+                <div class="project-preview"></div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="card col-span-6 fade-in-up">
+                <span class="card-label">Project 02</span>
+                <h3>AI Chat Interface</h3>
+                <p>Designing interactions for a new LLM model.</p>
+                <div class="project-preview" style="background:#161616;"></div>
+            </div>
+
+            <!-- Experience / Stack -->
+            <div class="card col-span-12 fade-in-up">
+                <span class="card-label">Toolkit</span>
+                <h3>Technologies I use</h3>
+                <div class="stack-list">
+                    <div class="stack-item">Framer</div>
+                    <div class="stack-item">React</div>
+                    <div class="stack-item">TypeScript</div>
+                    <div class="stack-item">Node.js</div>
+                    <div class="stack-item">Figma</div>
+                    <div class="stack-item">Three.js</div>
                 </div>
             </div>
+
         </div>
-    </section>
+    </div>
 
-    <!-- Projects Section -->
-    <section id="projects" class="py-20 bg-gray-800">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Featured Projects</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="project-card glass-effect rounded-lg overflow-hidden">
-                    <div class="h-48 bg-gradient-to-br from-blue-500 to-purple-600"></div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-3">E-Commerce Platform</h3>
-                        <p class="text-gray-300 mb-4">A modern e-commerce solution built with React and Node.js featuring real-time inventory management.</p>
-                        <div class="flex space-x-2 mb-4">
-                            <span class="px-3 py-1 bg-purple-600 text-xs rounded-full">React</span>
-                            <span class="px-3 py-1 bg-purple-600 text-xs rounded-full">Node.js</span>
-                            <span class="px-3 py-1 bg-purple-600 text-xs rounded-full">MongoDB</span>
-                        </div>
-                        <div class="flex space-x-4">
-                            <button class="text-purple-400 hover:text-purple-300 transition-colors">Live Demo</button>
-                            <button class="text-purple-400 hover:text-purple-300 transition-colors">GitHub</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card glass-effect rounded-lg overflow-hidden">
-                    <div class="h-48 bg-gradient-to-br from-green-500 to-blue-600"></div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-3">Task Management App</h3>
-                        <p class="text-gray-300 mb-4">A collaborative task management tool with real-time updates and team collaboration features.</p>
-                        <div class="flex space-x-2 mb-4">
-                            <span class="px-3 py-1 bg-green-600 text-xs rounded-full">Vue.js</span>
-                            <span class="px-3 py-1 bg-green-600 text-xs rounded-full">Firebase</span>
-                            <span class="px-3 py-1 bg-green-600 text-xs rounded-full">PWA</span>
-                        </div>
-                        <div class="flex space-x-4">
-                            <button class="text-purple-400 hover:text-purple-300 transition-colors">Live Demo</button>
-                            <button class="text-purple-400 hover:text-purple-300 transition-colors">GitHub</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card glass-effect rounded-lg overflow-hidden">
-                    <div class="h-48 bg-gradient-to-br from-pink-500 to-red-600"></div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-3">AI-Powered Analytics</h3>
-                        <p class="text-gray-300 mb-4">Machine learning dashboard for business analytics with predictive insights and data visualization.</p>
-                        <div class="flex space-x-2 mb-4">
-                            <span class="px-3 py-1 bg-pink-600 text-xs rounded-full">Python</span>
-                            <span class="px-3 py-1 bg-pink-600 text-xs rounded-full">TensorFlow</span>
-                            <span class="px-3 py-1 bg-pink-600 text-xs rounded-full">D3.js</span>
-                        </div>
-                        <div class="flex space-x-4">
-                            <button class="text-purple-400 hover:text-purple-300 transition-colors">Live Demo</button>
-                            <button class="text-purple-400 hover:text-purple-300 transition-colors">GitHub</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- FLOATING NAV DOCK -->
+    <div class="nav-dock-wrapper">
+        <nav class="nav-dock">
+            <a href="#home" class="nav-item active">Home</a>
+            <a href="#" class="nav-item">Work</a>
+            <a href="#" class="nav-item">Info</a>
+            <a href="#" class="nav-item">Contact</a>
+        </nav>
+    </div>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-gray-900">
-        <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Let's Work Together</h2>
-                <p class="text-xl text-gray-300 mb-12">Have a project in mind? I'd love to hear about it. Let's create something amazing together.</p>
-                
-                <div class="grid md:grid-cols-3 gap-8 mb-12">
-                    <div class="glass-effect p-6 rounded-lg">
-                        <div class="text-3xl mb-4">📧</div>
-                        <h3 class="font-semibold mb-2">Email</h3>
-                        <p class="text-gray-300">hello@yourname.com</p>
-                    </div>
-                    <div class="glass-effect p-6 rounded-lg">
-                        <div class="text-3xl mb-4">📱</div>
-                        <h3 class="font-semibold mb-2">Phone</h3>
-                        <p class="text-gray-300">+1 (555) 123-4567</p>
-                    </div>
-                    <div class="glass-effect p-6 rounded-lg">
-                        <div class="text-3xl mb-4">📍</div>
-                        <h3 class="font-semibold mb-2">Location</h3>
-                        <p class="text-gray-300">San Francisco, CA</p>
-                    </div>
-                </div>
-
-                <form class="max-w-2xl mx-auto">
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <input type="text" placeholder="Your Name" class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500">
-                        <input type="email" placeholder="Your Email" class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500">
-                    </div>
-                    <input type="text" placeholder="Subject" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 mb-6 focus:outline-none focus:border-purple-500">
-                    <textarea placeholder="Your Message" rows="6" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 mb-6 focus:outline-none focus:border-purple-500"></textarea>
-                    <button type="submit" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-full font-semibold hover:from-purple-600 hover:to-pink-600 transition-colors">
-                        Send Message
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-black py-12">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="text-2xl font-bold mb-4 md:mb-0">Portfolio</div>
-                <div class="flex space-x-6 mb-4 md:mb-0">
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.756-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001.017.001z"/>
-                        </svg>
-                    </a>
-                </div>
-                <div class="text-gray-400">
-                    © 2024 Portfolio. All rights reserved.
-                </div>
-            </div>
-        </div>
-    </footer>
-
+    <!-- SCRIPT FOR ANIMATIONS -->
     <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Add scroll effect to navbar
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.style.backdropFilter = 'blur(20px)';
-                nav.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-            } else {
-                nav.style.backdropFilter = 'blur(10px)';
-                nav.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-            }
-        });
-
-        // Animate skill bars on scroll
-        const animateSkillBars = () => {
-            const skillBars = document.querySelectorAll('.skill-bar');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.width = entry.target.style.width;
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            skillBars.forEach(bar => observer.observe(bar));
+        // 1. Intersection Observer for Fade Up Animation
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
         };
 
-        // Initialize animations when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            animateSkillBars();
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
         });
 
-        // Form submission
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your message! I\'ll get back to you soon.');
-            this.reset();
+        // 2. Simple Active State for Nav (Optional logic)
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+            });
         });
     </script>
 </body>
