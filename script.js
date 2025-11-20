@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Custom Animation Loop
                 const startPosition = window.pageYOffset;
                 const distance = offsetPosition - startPosition;
-                const duration = 1000; // 1000ms = 1 seconds (Adjust speed here)
+                const duration = 600; // 600ms = 0.6 seconds (Adjust speed here)
                 let start = null;
 
                 function step(timestamp) {
