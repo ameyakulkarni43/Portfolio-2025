@@ -3,93 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | UX Designer</title>
-    
-    <!-- Pre-load Inter Font for that clean look -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-    <!-- LINK TO EXTERNAL CSS FILE -->
+    <title>UX Portfolio | [Your Name]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
-        
-        <!-- HERO SECTION -->
-        <section class="hero fade-in-up" id="home">
-            <div class="avatar">
-                <!-- Replace src with your image -->
-                <img src="https://ui-avatars.com/api/?name=Y+N&background=random&color=fff" alt="Me">
-            </div>
-            <h1>Building digital<br>products & brands.</h1>
-            <p>I am a multidisciplinary designer and developer focusing on interaction and visual identity.</p>
-        </section>
-
-        <!-- BENTO GRID SECTION -->
-        <div class="bento-grid">
-            <!-- About Card -->
-            <div class="card col-span-8 fade-in-up">
-                <span class="card-label">About Me</span>
-                <h3>Driven by design, powered by code.</h3>
-                <p style="margin-top:1rem;">I have over 5 years of experience working with startups and agencies. My goal is to bridge the gap between creative design and technical implementation.</p>
-            </div>
-        
-
-            <!-- Socials / Contact -->
-            <div class="card col-span-4 fade-in-up" style="display:flex; flex-direction:column; justify-content:center;">
-                <span class="card-label">Connect</span>
-                <div style="display:flex; gap:15px; margin-top:10px;">
-                    <a href="#" class="stack-item">Twitter/X</a>
-                    <a href="#" class="stack-item">LinkedIn</a>
-                    <a href="#" class="stack-item">Email</a>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">[Your Name]</a>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#work">Work</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span><span></span><span></span>
                 </div>
-            </div>
-
-            <!-- Project 1 -->
-            <div id="work" class="card col-span-6 fade-in-up" style="scroll-margin-top: 100px;padding-top: 20px;">
-                <span class="card-label">Project 01</span>
-                <h3>Finance Dashboard</h3>
-                <p>A complete overhaul of a fintech banking platform.</p>
-                <div class="project-preview"></div>
-            </div>
-
-            <!-- Project 2 -->
-            <div class="card col-span-6 fade-in-up">
-                <span class="card-label">Project 02</span>
-                <h3>AI Chat Interface</h3>
-                <p>Designing interactions for a new LLM model.</p>
-                <div class="project-preview" style="background:#161616;"></div>
-            </div>
-
-            <!-- Experience / Stack -->
-            <div class="card col-span-12 fade-in-up">
-                <span class="card-label">Toolkit</span>
-                <h3>Technologies I use</h3>
-                <div class="stack-list">
-                    <div class="stack-item">Framer</div>
-                    <div class="stack-item">React</div>
-                    <div class="stack-item">TypeScript</div>
-                    <div class="stack-item">Node.js</div>
-                    <div class="stack-item">Figma</div>
-                    <div class="stack-item">Three.js</div>
-                </div>
-            </div>
-
+            </nav>
         </div>
-    </div>
+    </header>
 
-    <!-- FLOATING NAV DOCK -->
-    <div class="nav-dock-wrapper">
-        <nav class="nav-dock">
-            <a href="#home" class="nav-item active">Home</a>
-            <a href="#work" class="nav-item">Work</a>
-            <a href="#" class="nav-item">Info</a>
-            <a href="#" class="nav-item">Contact</a>
-        </nav>
-    </div>
+    <section class="hero">
+        <div class="container">
+            <h1>Designing Intuitive<br>Digital Experiences.</h1>
+            <p>Hi, I’m [Your Name]. A Product Designer focused on creating user-centric solutions that drive business growth.</p>
+            <div class="hero-buttons">
+                <a href="#work" class="btn">View My Work</a>
+                <a href="#contact" class="btn-outline">Let's Talk</a>
+            </div>
+        </div>
+    </section>
 
-    <!-- SCRIPT FOR ANIMATIONS -->
+    <section id="about" class="about section-padding">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>I am a passionate UX/UI Designer based in [Location]. With a background in [Your Background], I bridge the gap between aesthetics and functionality.</p>
+                    <br>
+                    <p>My philosophy is simple: Design is not just about how things look, but how they work. I enjoy untangling complex problems and turning them into simple, beautiful interface designs.</p>
+                </div>
+                <div class="about-img">
+                    <span>[Your Image]</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">What I Do</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>UX Research</h3>
+                    <p>Understanding user needs through interviews, surveys, and usability testing to inform design decisions.</p>
+                </div>
+                <div class="service-card">
+                    <h3>UI Design</h3>
+                    <p>Creating pixel-perfect, accessible, and visually engaging interfaces for web and mobile applications.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Prototyping</h3>
+                    <p>Building low to high-fidelity wireframes and interactive prototypes to visualize flows.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="work" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Selected Works</h2>
+            <div class="portfolio-grid">
+                
+                <article class="project-card">
+                    <a href="#">
+                        <div class="project-image">
+                            </div>
+                        <div class="project-info">
+                            <h3>Fintech Dashboard Redesign</h3>
+                            <p>Improving the user retention rate for a leading banking app through simplified navigation.</p>
+                            <div class="tags">
+                                <span>UX Research</span>
+                                <span>UI Design</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="project-card">
+                    <a href="#">
+                        <div class="project-image">
+                            </div>
+                        <div class="project-info">
+                            <h3>E-Commerce Mobile App</h3>
+                            <p>Designing an end-to-end shopping experience focused on accessibility and speed.</p>
+                            <div class="tags">
+                                <span>Mobile Design</span>
+                                <span>Prototyping</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+                
+                <article class="project-card">
+                    <a href="#">
+                        <div class="project-image">
+                            </div>
+                        <div class="project-info">
+                            <h3>Health & Wellness Platform</h3>
+                            <p>A web platform connecting patients with nutritionists via video calls.</p>
+                            <div class="tags">
+                                <span>Product Design</span>
+                                <span>Strategy</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials section-padding">
+        <div class="container">
+            <h2 class="section-title">Kind Words</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p>"[Your Name] completely transformed our app. The attention to detail and user empathy was outstanding."</p>
+                    <div class="author">Sarah Johnson</div>
+                    <div class="role">Product Manager, TechCo</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"A true professional who understands both the business goals and the user's pain points."</p>
+                    <div class="author">Mike Chen</div>
+                    <div class="role">Founder, StartupX</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section-padding">
+        <div class="container contact-content">
+            <h2 class="section-title">Let's Work Together</h2>
+            <p>I’m currently open to new projects and opportunities. Whether you have a question or just want to say hi, I’ll try my best to get back to you!</p>
+            <a href="mailto:email@example.com" class="btn">Say Hello</a>
+            <div class="social-links">
+                <a href="#">LinkedIn</a> &nbsp;|&nbsp; <a href="#">Dribbble</a> &nbsp;|&nbsp; <a href="#">Behance</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 [Your Name]. Designed & Built with ❤️.</p>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
