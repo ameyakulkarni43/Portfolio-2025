@@ -1,68 +1,29 @@
-document.addEventListener("DOMContentLoaded", () => {
+// Select DOM items
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
 
-    // --- 1. FADE UP ANIMATION OBSERVER ---
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
+// Toggle Menu on Click
+hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('nav-active');
+    
+    // Explicitly handle display property for animation logic if needed
+    if (navLinks.classList.contains('nav-active')) {
+        navLinks.style.display = 'flex';
+    } else {
+        navLinks.style.display = 'none';
+    }
+});
 
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target); // Only animate once
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.fade-in-up').forEach(el => {
-        observer.observe(el);
-    });
-
-
-    // --- 2. CUSTOM SLOW SMOOTH SCROLL ---
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault(); // Stop default jump
-
-            const targetId = this.getAttribute('href');
-            const target = document.querySelector(targetId);
-            
-            if (target) {
-                // Update Active State on Click
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                this.classList.add('active');
-
-                // Calculate Position
-                const navOffset = 100; // Space to leave at top so title isn't hidden
-                const elementPosition = target.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - navOffset;
-
-                // Custom Animation Loop
-                const startPosition = window.pageYOffset;
-                const distance = offsetPosition - startPosition;
-                const duration = 600; // 600ms = 0.6 seconds (Adjust speed here)
-                let start = null;
-
-                function step(timestamp) {
-                    if (!start) start = timestamp;
-                    const progress = timestamp - start;
-                    
-                    // Easing function (easeInOutCubic)
-                    // Starts slow, speeds up, ends slow
-                    const ease = progress / duration < 0.5
-                        ? 4 * progress * progress * progress / (duration * duration * duration)
-                        : 1 - Math.pow(-2 * progress / duration + 2, 3) / 2;
-
-                    window.scrollTo(0, startPosition + (distance * ease));
-
-                    if (progress < duration) {
-                        window.requestAnimationFrame(step);
-                    }
-                }
-                window.requestAnimationFrame(step);
-            }
-        });
-    });
+// Reset nav display on resize
+// This prevents the menu from staying hidden if you resize the browser from mobile to desktop
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        navLinks.style.display = 'flex';
+        navLinks.classList.remove('nav-active');
+    } else {
+        // If resizing down to mobile, hide it unless active
+        if(!navLinks.classList.contains('nav-active')){
+           navLinks.style.display = 'none'; 
+        }
+    }
 });
